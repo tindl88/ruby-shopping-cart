@@ -1,25 +1,36 @@
-require('./product')
 require('./cart')
-
-# List of products
-$products = [
-  Product.new(1, 'book', 12.49, 0, 0),
-  Product.new(2, 'music cd', 14.99, 10, 0),
-  Product.new(3, 'chocolate bar', 0.85, 0, 0)
-]
+require('./db')
 
 class SaleTaxApp
-  def initialize
-    @cart1 = Cart.new
-    @cart1.add_item($products[0].id)
-    @cart1.add_item($products[1].id)
-    @cart1.add_item($products[2].id)
+  def shopping_cart_1
+    @cart1 = Cart.new($products_1)
+    @cart1.add_item($products_1[0].id)
+    @cart1.add_item($products_1[1].id)
+    @cart1.add_item($products_1[2].id)
+    @cart1.show_detail
+  end
+ 
+  def shopping_cart_2
+    @cart2 = Cart.new($products_2)
+    @cart2.add_item($products_2[0].id)
+    @cart2.add_item($products_2[1].id)
+    @cart2.show_detail
   end
 
-  def checkout
-    @cart1.show_detail
+  def shopping_cart_3
+    @cart3 = Cart.new($products_3)
+    @cart3.add_item($products_3[0].id)
+    @cart3.add_item($products_3[1].id)
+    @cart3.add_item($products_3[2].id)
+    @cart3.add_item($products_3[3].id)
+    @cart3.show_detail
   end
 end
 
 myApp = SaleTaxApp.new
-myApp.checkout
+puts "===================OUTPUT 1==================="
+myApp.shopping_cart_1
+puts "===================OUTPUT 2==================="
+myApp.shopping_cart_2
+puts "===================OUTPUT 3==================="
+myApp.shopping_cart_3
