@@ -1,59 +1,80 @@
-require('./db')
+require './db'
+require './tax'
+require './printer'
 
 class Cart
-  ROUND_FACTOR = 1 / 0.05
-
   def initialize(catalog)
-    @@products = {}
+    @printer = Printer.new()
     @catalog = catalog
+    @cart_items = {}
   end
 
   def add_item(id, quantity = 1)
     if is_product_exist_in_cart(id)
       set_quantity(id, quantity)
     else
-      @@products[id] = quantity
+      @cart_items[id] = quantity
     end
   end
 
   def remove_item(id)
-    @@products.delete(id);
+    @cart_items.delete(id);
   end
 
   def is_product_exist_in_cart(id)
-    @@products.has_key? (id)
+    @cart_items.has_key? (id)
   end
 
   def set_quantity(id, quantity)
-    @@products[id] += quantity
+    @cart_items[id] += quantity
   end
 
-  def round_tax(amt)
-    ((amt * ROUND_FACTOR).ceil / ROUND_FACTOR)
-  end
-
-  def compute_tax(product)
-    tax = product.saleTax + product.importTax
-    result = tax > 0 ? product.price * tax : 0.0
-  end
-
-  def show_detail
+  def order_detail
+    tax = Tax.new
     total_tax = 0.0
     total_price = 0.0
-    @@products.each do |id, quanity| 
+
+    items = []
+    data = {}
+    meta = {}
+
+    @cart_items.each do |id, quantity| 
       product = @catalog.select { |x| x.id == id }[0]
-      product_tax = compute_tax(product)
-      product_tax = round_tax(product_tax)
-      product_price_with_tax = (product.price + product_tax)
-      product_subtotal_price_with_tax = product_price_with_tax * quanity
-      total_tax += product_tax
+      product_tax = tax.compute_tax(product.price, product.sale_tax, product.import_tax)
+      product_tax_rounded = tax.round_tax(product_tax)
+      product_price_with_tax = (product.price + product_tax_rounded)
+      product_subtotal_price_with_tax = product_price_with_tax * quantity
+      total_tax += product_tax_rounded
       total_price += product_subtotal_price_with_tax
-      
-      puts "#{quanity}, #{product.name}, #{product_price_with_tax.round(2)}" 
+
+      item = {}
+      item["id"] = id
+      item["name"] = product.name
+      item["price"] = product.price
+      item["price_with_tax"] = sprintf("%.2f", product_price_with_tax)
+      item["tax"] = product_tax
+      item["tax_rounded"] = product_tax_rounded
+      item["quantity"] = quantity
+      items.push(item)
     end
 
-    puts ""
-    puts "Sales Taxes: #{total_tax.round(2)}"
-    puts "Total: #{total_price.round(2)}"
+    meta["sales_taxes"] = sprintf("%.2f", total_tax)
+    meta["total"] = sprintf("%.2f", total_price)
+    data["items"] = items
+    data["meta"] = meta
+
+    return data
+  end
+
+  def to_console
+    order = order_detail
+    @printer.console(order)
+    return order
+  end
+
+  def to_csv(file_name)
+    order = order_detail
+    @printer.csv(order, file_name)
+    return order
   end
 end
