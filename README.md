@@ -1,4 +1,13 @@
-# ruby-shopping-cart
+# Sales Taxes
 
-Run: `rubymon ./app.rb`
-Test: `rspec ./spec`
+## Run
+
+```bash
+ruby ./app.rb
+```
+
+## Test
+
+```bash
+rspec ./spec
+```
