@@ -1,5 +1,5 @@
-require('./cart')
-require('./db')
+require './cart'
+require './db'
 
 class SaleTaxApp
   def shopping_cart_1
@@ -7,14 +7,16 @@ class SaleTaxApp
     @cart1.add_item($products_1[0].id)
     @cart1.add_item($products_1[1].id)
     @cart1.add_item($products_1[2].id)
-    @cart1.show_detail
+    @cart1.to_console
+    @cart1.to_csv("./output/ouput_1.csv")
   end
  
   def shopping_cart_2
     @cart2 = Cart.new($products_2)
     @cart2.add_item($products_2[0].id)
     @cart2.add_item($products_2[1].id)
-    @cart2.show_detail
+    @cart2.to_console
+    @cart2.to_csv("./output/ouput_2.csv")
   end
 
   def shopping_cart_3
@@ -23,14 +25,16 @@ class SaleTaxApp
     @cart3.add_item($products_3[1].id)
     @cart3.add_item($products_3[2].id)
     @cart3.add_item($products_3[3].id)
-    @cart3.show_detail
+    @cart3.to_console
+    @cart3.to_csv("./output/ouput_3.csv")
   end
 end
 
 myApp = SaleTaxApp.new
-puts "===================OUTPUT 1==================="
+puts "SALES TAXES"
+puts "\n===================OUTPUT 1==================="
 myApp.shopping_cart_1
-puts "===================OUTPUT 2==================="
+puts "\n===================OUTPUT 2==================="
 myApp.shopping_cart_2
-puts "===================OUTPUT 3==================="
+puts "\n===================OUTPUT 3==================="
 myApp.shopping_cart_3
