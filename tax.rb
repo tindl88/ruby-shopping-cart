@@ -7,6 +7,6 @@ class Tax
 
   def compute_tax(product_price, sale_tax, import_tax)
     tax = sale_tax + import_tax
-    result = tax > 0 ? product_price * tax : 0.0
+    tax > 0 ? product_price * tax : 0.0
   end
 end

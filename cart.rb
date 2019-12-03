@@ -48,10 +48,8 @@ class Cart
       total_price += product_subtotal_price_with_tax
 
       item = {}
-      item["id"] = id
       item["quantity"] = quantity
       item["name"] = product.name
-      item["price"] = product.price
       item["price_with_tax"] = sprintf("%.2f", product_price_with_tax)
       item["tax"] = product_tax
       item["tax_rounded"] = product_tax_rounded
@@ -63,16 +61,14 @@ class Cart
     data["items"] = items
     data["meta"] = meta
 
-    return data
+    data
   end
 
   def to_console
-    order = order_detail
-    @printer.console(order)
+    @printer.console(order_detail)
   end
 
   def to_csv(file_name)
-    order = order_detail
-    @printer.csv(order, file_name)
+    @printer.csv(order_detail, file_name)
   end
 end
