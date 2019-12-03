@@ -1,49 +1,50 @@
 require "./cart"
-require "./db"
+require "./database"
 require "./spec/sale_tax_helper"
 
 sale_tax_helper = SaleTaxHelper.new
 
-# describe "check input data" do
-#   context "input 1" do
-#     specify do
-#       input_spec = [
-#         "1, book, 12.49",
-#         "1, music cd, 14.99",
-#         "1, chocolate bar, 0.85"
-#       ]
+list_of_product_1 = Database.tranform_texts_to_products('./input/input_1.txt')
+list_of_product_2 = Database.tranform_texts_to_products('./input/input_2.txt')
+list_of_product_3 = Database.tranform_texts_to_products('./input/input_3.txt')
 
-#       input_data = sale_tax_helper.input($products_1)
-#       expect(input_data).to match_array(input_spec)
-#     end
-#   end
+describe "check input data" do
+  context "input 1" do
+    specify do
+      input_spec = [
+        "1, book, 12.49",
+        "1, music cd, 14.99",
+        "1, chocolate bar, 0.85"
+      ]
+      input_data = sale_tax_helper.input(list_of_product_1)
+      expect(input_data).to match_array(input_spec)
+    end
+  end
 
-#   context "input 2" do
-#     specify do
-#       input_spec = [
-#         "1, imported box of chocolates, 10.00",
-#         "1, imported bottle of perfume, 47.50"
-#       ]
+  context "input 2" do
+    specify do
+      input_spec = [
+        "1, imported box of chocolates, 10.00",
+        "1, imported bottle of perfume, 47.50"
+      ]
+      input_data = sale_tax_helper.input(list_of_product_2)
+      expect(input_data).to match_array(input_spec)
+    end
+  end
 
-#       input_data = sale_tax_helper.input($products_2)
-#       expect(input_data).to match_array(input_spec)
-#     end
-#   end
-
-#   context "input 3" do
-#     specify do
-#       input_spec = [
-#         "1, imported bottle of perfume, 27.99",
-#         "1, bottle of perfume, 18.99",
-#         "1, packet of headache pills, 9.75",
-#         "1, box of imported chocolates, 11.25"
-#       ]
-
-#       input_data = sale_tax_helper.input($products_3)
-#       expect(input_data).to match_array(input_spec)
-#     end
-#   end
-# end
+  context "input 3" do
+    specify do
+      input_spec = [
+        "1, imported bottle of perfume, 27.99",
+        "1, bottle of perfume, 18.99",
+        "1, packet of headache pills, 9.75",
+        "1, box of imported chocolates, 11.25"
+      ]
+      input_data = sale_tax_helper.input(list_of_product_3)
+      expect(input_data).to match_array(input_spec)
+    end
+  end
+end
 
 describe "check output data" do
   it "output 1" do
@@ -55,10 +56,10 @@ describe "check output data" do
       "Total: 29.83"
     ]
 
-    cart = Cart.new($products_1)
-    cart.add_item($products_1[0].id)
-    cart.add_item($products_1[1].id)
-    cart.add_item($products_1[2].id)
+    cart = Cart.new(list_of_product_1)
+    cart.add_item(list_of_product_1[0].id)
+    cart.add_item(list_of_product_1[1].id)
+    cart.add_item(list_of_product_1[2].id)
     output_data = sale_tax_helper.output(cart.order_detail)
     expect(output_data).to match_array(output_spec)
   end
@@ -71,9 +72,9 @@ describe "check output data" do
       "Total: 65.15"
     ]
 
-    cart = Cart.new($products_2)
-    cart.add_item($products_2[0].id)
-    cart.add_item($products_2[1].id)
+    cart = Cart.new(list_of_product_2)
+    cart.add_item(list_of_product_2[0].id)
+    cart.add_item(list_of_product_2[1].id)
     output_data = sale_tax_helper.output(cart.order_detail)
     expect(output_data).to match_array(output_spec)
   end
@@ -88,11 +89,11 @@ describe "check output data" do
       "Total: 74.68"
     ]
 
-    cart = Cart.new($products_3)
-    cart.add_item($products_3[0].id)
-    cart.add_item($products_3[1].id)
-    cart.add_item($products_3[2].id)
-    cart.add_item($products_3[3].id)
+    cart = Cart.new(list_of_product_3)
+    cart.add_item(list_of_product_3[0].id)
+    cart.add_item(list_of_product_3[1].id)
+    cart.add_item(list_of_product_3[2].id)
+    cart.add_item(list_of_product_3[3].id)
     output_data = sale_tax_helper.output(cart.order_detail)
     expect(output_data).to match_array(output_spec)
   end
