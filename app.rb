@@ -1,5 +1,5 @@
-require './cart'
-require './db'
+require "./cart"
+require "./db"
 
 class SaleTaxApp
   def shopping_cart_1

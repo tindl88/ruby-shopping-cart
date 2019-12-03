@@ -1,11 +1,12 @@
-require 'csv'
+require "csv"
 
 class Printer
   def console(data)
     data["items"].each do |x|
       puts "#{x["quantity"]}, #{x["name"]}, #{x["price_with_tax"]}"
     end
-    puts "\nSales Taxes: #{data["meta"]["sales_taxes"]}"
+    puts ""
+    puts "Sales Taxes: #{data["meta"]["sales_taxes"]}"
     puts "Total: #{data["meta"]["total"]}"
   end
 

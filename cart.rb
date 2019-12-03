@@ -1,6 +1,6 @@
-require './db'
-require './tax'
-require './printer'
+require "./db"
+require "./tax"
+require "./printer"
 
 class Cart
   def initialize(catalog)
@@ -22,7 +22,7 @@ class Cart
   end
 
   def is_product_exist_in_cart(id)
-    @cart_items.has_key? (id)
+    @cart_items.has_key?(id)
   end
 
   def set_quantity(id, quantity)
@@ -49,12 +49,12 @@ class Cart
 
       item = {}
       item["id"] = id
+      item["quantity"] = quantity
       item["name"] = product.name
       item["price"] = product.price
       item["price_with_tax"] = sprintf("%.2f", product_price_with_tax)
       item["tax"] = product_tax
       item["tax_rounded"] = product_tax_rounded
-      item["quantity"] = quantity
       items.push(item)
     end
 
@@ -69,12 +69,10 @@ class Cart
   def to_console
     order = order_detail
     @printer.console(order)
-    return order
   end
 
   def to_csv(file_name)
     order = order_detail
     @printer.csv(order, file_name)
-    return order
   end
 end
